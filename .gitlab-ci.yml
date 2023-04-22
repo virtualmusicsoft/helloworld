@@ -1,0 +1,24 @@
+image: maven:latest
+
+stages:
+  - build
+  - test
+
+build-job:
+  stage: build
+  script:
+    - echo "Compiling the code..."
+    - mvn clean package
+    - echo "Compile complete."
+  artifacts:
+    paths:
+    - target   
+
+test-job:
+  stage: test
+  dependencies: 
+    - build-job  
+  script:
+    - ls -al
+    - echo "Running tests"
+    - java -cp target/helloworld-1.1.jar com.coveros.demo.helloworld.HelloWorld
