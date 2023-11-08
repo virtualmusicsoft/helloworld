@@ -1,4 +1,4 @@
-image: maven:latest
+image: intension/docker-dind-maven:3.8.5-r0-openjdk17
 
 stages:
   - build
