@@ -3,6 +3,7 @@ image: maven:latest
 stages:
   - build
   - test
+  - verify
 
 build-job:
   stage: build
@@ -19,6 +20,12 @@ test-job:
   dependencies: 
     - build-job  
   script:
-    - ls -al
-    - echo "Running tests"
-    - java -cp target/helloworld-1.1.jar com.coveros.demo.helloworld.HelloWorld
+    - echo "Running tests... TODO!"
+
+verify-job:
+  stage: verify
+  dependencies:
+    - test-job
+  script:
+    - echo "Running verify..."
+    - mvn verify
