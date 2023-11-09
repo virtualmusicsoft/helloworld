@@ -2,8 +2,8 @@ image: intension/docker-dind-maven:3.8.5-r0-openjdk17
 
 stages:
   - build
-  - test
-  - verify
+  - unit-testing
+  - integration-testing
 
 build-job:
   stage: build
@@ -15,17 +15,17 @@ build-job:
     paths:
     - target   
 
-test-job:
-  stage: test
+unit-testing-job:
+  stage: unit-testing
   dependencies: 
     - build-job  
   script:
-    - echo "Running tests... TODO!"
+    - echo "Running unit test... TODO!"
 
-verify-job:
-  stage: verify
+integration-testing-job:
+  stage: integration-testing
   dependencies:
-    - test-job
+    - unit-testing-job
   script:
-    - echo "Running verify..."
+    - echo "Running integration test..."
     - mvn verify
