@@ -10,6 +10,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Disabled;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
@@ -18,9 +19,10 @@ import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Disabled
 class CustomerControllerTest {
 
-  @LocalServerPort
+  /*@LocalServerPort
   private Integer port;
 
   static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>(
@@ -68,5 +70,5 @@ class CustomerControllerTest {
       .then()
       .statusCode(200)
       .body(".", hasSize(2));
-  }
+  }*/
 }

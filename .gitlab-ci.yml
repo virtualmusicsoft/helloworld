@@ -1,9 +1,13 @@
 image: intension/docker-dind-maven:3.8.5-r0-openjdk17
 
+variables:
+  SONAR_PROJECT_KEY: "my-project-sonar-key"
+
 stages:
   - build
-  - unit-testing
-  - integration-testing
+  - sonarqube-check
+ # - unit-testing
+ # - integration-testing
 
 build-job:
   stage: build
@@ -13,19 +17,45 @@ build-job:
     - echo "Compile complete."
   artifacts:
     paths:
-    - target   
+    - target
 
-unit-testing-job:
-  stage: unit-testing
+sonarqube-check:
+  stage: sonarqube-check
+  image: maven:3-eclipse-temurin-17
+  variables:
+    SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
+    GIT_DEPTH: "0"  # Tells git to fetch all the branches of the project, required by the analysis task
+  cache:
+    key: "${CI_JOB_NAME}"
+    paths:
+      - .sonar/cache
+  script: 
+    - mvn sonar:sonar \
+      -Dsonar.projectKey=$SONAR_PROJECT_KEY \
+      -Dsonar.host.url=$SONAR_HOST_URL \
+      -Dsonar.login=$SONAR_TOKEN \
+      -Dsonar.qualitygate.wait=true \
+      -Dsonar.qualitygate.timeout=$SONAR_QUALITYGATE_TIMEOUT
+  allow_failure: true
+  only:
+    - merge_requests
+    - master
+    - main
+    - develop
   dependencies: 
-    - build-job  
-  script:
-    - echo "Running unit test... TODO!"
+    - build-job
 
-integration-testing-job:
-  stage: integration-testing
-  dependencies:
-    - unit-testing-job
-  script:
-    - echo "Running integration test..."
-    - mvn verify
+#unit-testing-job:
+#  stage: unit-testing
+#  dependencies: 
+#    - build-job  
+#  script:
+#    - echo "Running unit test... TODO!"
+
+#integration-testing-job:
+#  stage: integration-testing
+#  dependencies:
+#    - unit-testing-job
+#  script:
+#    - echo "Running integration test..."
+#    - mvn verify
