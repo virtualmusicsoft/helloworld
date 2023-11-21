@@ -30,11 +30,11 @@ sonarqube-check:
     paths:
       - .sonar/cache
   script: 
-    - mvn sonar:sonar \
-      -Dsonar.projectKey="$SONAR_PROJECT_KEY" \
-      -Dsonar.host.url="$SONAR_HOST_URL" \
-      -Dsonar.login="$SONAR_TOKEN" \
-      -Dsonar.qualitygate.wait="$SONAR_QUALITYGATE_WAIT" \
+    - mvn sonar:sonar
+      -Dsonar.projectKey="$SONAR_PROJECT_KEY"
+      -Dsonar.host.url="$SONAR_HOST_URL"
+      -Dsonar.login="$SONAR_TOKEN"
+      -Dsonar.qualitygate.wait="$SONAR_QUALITYGATE_WAIT"
       -Dsonar.qualitygate.timeout="$SONAR_QUALITYGATE_TIMEOUT"
   #allow_failure: true
   only:
