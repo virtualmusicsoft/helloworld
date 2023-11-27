@@ -5,21 +5,31 @@ variables:
 
 stages:
   - build
+  - integration-testing
   - sonarqube-check
- # - unit-testing
- # - integration-testing
 
 build-job:
   stage: build
   script:
     - echo "Compiling the code..."
-    - mvn clean package
+    - mvn clean compile
     - echo "Compile complete."
   artifacts:
     paths:
     - target
 
-sonarqube-check:
+integration-testing-job:
+  stage: integration-testing
+  script:
+    - mvn verify
+  artifacts:
+    paths:
+    - target
+  dependencies: 
+    - build-job
+    
+
+sonarqube-check-job:
   stage: sonarqube-check
   image: maven:3-eclipse-temurin-17
   variables:
@@ -30,7 +40,8 @@ sonarqube-check:
     paths:
       - .sonar/cache
   script: 
-    - mvn sonar:sonar
+    - mvn verify sonar:sonar 
+      -Dmaven.test.skip=true
       -Dsonar.projectKey="$SONAR_PROJECT_KEY"
       -Dsonar.host.url="$SONAR_HOST_URL"
       -Dsonar.login="$SONAR_TOKEN"
@@ -43,7 +54,7 @@ sonarqube-check:
     - main
     - develop
   dependencies: 
-    - build-job
+    - integration-testing-job
 
 #unit-testing-job:
 #  stage: unit-testing
@@ -51,11 +62,3 @@ sonarqube-check:
 #    - build-job  
 #  script:
 #    - echo "Running unit test... TODO!"
-
-#integration-testing-job:
-#  stage: integration-testing
-#  dependencies:
-#    - unit-testing-job
-#  script:
-#    - echo "Running integration test..."
-#    - mvn verify
