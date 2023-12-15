@@ -1,0 +1,15 @@
+{
+  "app": {
+    "welcome": "Welcome to our App!",
+    "greeting": "Hello, {name}!",
+    "menu": {
+      "home": "Home",
+      "about": "About Us",
+      "contact": "Contact"
+    },
+    "messages": {
+      "error": "An error occurred: {errorMessage}",
+      "success": "Success! {successMessage}"
+    }
+  }
+}
