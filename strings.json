@@ -7,6 +7,7 @@
       "about": "About Us",
       "contact": "Contact"
     },
+    "feature-001": "some text",
     "messages": {
       "error": "An error occurred: {errorMessage}",
       "success": "Success! {successMessage}"
